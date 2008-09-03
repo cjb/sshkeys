@@ -17,13 +17,17 @@ def index(request):
 
 def list(request, **kwargs):
     kwargs['allow_empty'] = True
-    kwargs['queryset'] = Address.objects.all().order_by("address")
+    kwargs['queryset'] = \
+      AddressKey.objects.filter(verified=True).order_by("address__address")
     return object_list(request, **kwargs)
 
 def detail(request, address):
-    owner = Address.objects.get(address=address)
-    keys = [unicode(key) for key in owner.sshkey_set.all()]
-    return HttpResponse("\n".join(keys), mimetype="text/plain")
+    keyobjs = AddressKey.objects.filter(verified=True, 
+                                        address__address=address)
+    keylist = set()
+    for key in keyobjs:
+        keylist.add(unicode(key.sshkey))
+    return HttpResponse("\n".join(keylist), mimetype="text/plain")
 
 def upload(request):
     address_str = request.POST['address']
@@ -39,18 +43,18 @@ def upload(request):
                           defaults={'date_added': datetime.now(),
                                     'verified': False,
                                     'token_sent': datetime.now()})
-    if created:
-        newrel.send_confirmation(newrel)
-        return render_to_response("keys/address_uploaded.html")
-    else:
-        newrel.send_confirmation(newrel)
-        return render_to_response("keys/address_index.html")
+
+    # "if created:" can tell us whether we created a new pair or
+    # just sent out a reminder about an old one, if we care.
+    newrel.send_confirmation(newrel)
+    return render_to_response("keys/address_uploaded.html")
 
 def search(request, **kwargs):
     search_str = request.POST['search']
     search = search_str.rstrip()
     kwargs['allow_empty'] = True
-    kwargs['queryset'] = Address.objects.filter(address__contains=search)
+    kwargs['queryset'] = AddressKey.objects.filter(verified=True,
+        address__address__contains=search).order_by("address__address")
     return object_list(request, extra_context={"search": search}, **kwargs)
 
 def confirm(request, token):
@@ -63,13 +67,11 @@ def confirm(request, token):
 
 def download(request):
     search_str = request.POST['search']
-    addresses = Address.objects.filter(address__contains=search_str)
-    keys = set()
-    for address in addresses:
-        for key in address.sshkey_set.all():
-            keys.add(unicode(key))
+    keys = AddressKey.objects.filter(verified=True,
+        address__address__contains=search_str).order_by("address__address")
 
-    if len(keys) > 0:
-        return HttpResponse("\n".join(keys), mimetype="text/plain")
-    else:
-        raise Http404
+    keylist = set()
+    for key in keys:
+        keylist.add(unicode(key.sshkey))
+
+    return HttpResponse("\n".join(keylist), mimetype="text/plain")

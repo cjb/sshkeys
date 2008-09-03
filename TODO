@@ -1,6 +1,5 @@
 TODO:
 
-* actually check whether a mail/key pair is Verified before returning it.
 * check for weak keys when a key is uploaded
 * allow upload of more than one key/associate with more than one mail 
   address at once.

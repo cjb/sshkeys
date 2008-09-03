@@ -44,19 +44,22 @@ class AddressKey (models.Model):
         else:
             return False
 
-    def send_confirmation(self, email_address):
+    def send_confirmation(self, keyobj):
         salt = sha.new(str(random())).hexdigest()[:5]
         # FIXME: Is this random enough?
-        confirmation_key = sha.new(salt + email_address.address.address).hexdigest()
+        confirmation_key = sha.new(salt + keyobj.address.address).hexdigest()
         activate_url = u"http://%s%s" % (
             "sshkeys.net/confirm_email/", confirmation_key)
 
         message = render_to_string("keys/email_confirmation_message.txt", {
             "confirmation_key": confirmation_key,
+            "sshkey": keyobj.sshkey.keytext,
+            "email_address": keyobj.address.address
         })
-        send_mail("SSH Key verification.", message, settings.FROM_EMAIL, [email_address.address.address])
-        email_address.token = confirmation_key
-        email_address.save()
+        send_mail("SSH Key verification.", message, 
+                  settings.FROM_EMAIL, [keyobj.address.address])
+        keyobj.token = confirmation_key
+        keyobj.save()
 
     def delete_expired_confirmations(self):
         for confirmation in self.all():
