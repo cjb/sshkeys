@@ -7,6 +7,7 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
+APPEND_SLASH = False
 FORCE_SCRIPT_NAME = ''
 
 MANAGERS = ADMINS
