@@ -1,0 +1,8 @@
+{% extends "keys/base_template.html" %}
+
+<h1>{{ owner }}</h1>
+<ul>
+{% for key in keys %}
+    <li>{{ key }}</li>
+{% endfor %}
+</ul>

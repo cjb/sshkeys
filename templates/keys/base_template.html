@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="robots" content="NONE,NOARCHIVE">
+  <style type="text/css">
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#d1d1d1; }
+    body>div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom: 0em; }
+    h1 span { font-size:60%; color:#666; font-weight:normal; }
+    table { border:none; border-collapse: collapse; width:100%; }
+    td, th { vertical-align:top; padding:2px 3px; }
+    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    blockquote { margin: 0.5em 4em; }
+    blockquote { font-family: monospace;}
+    #summary { background: #ffc; }
+    #explanation { background:#f6f6f6; }
+    #secone { background:#eee; border-bottom: 0px none; }
+    #sectwo { background:#e1e1e1; border-bottom: 0px none; }
+    #footer { background:#d5d5d5; border-bottom: 0px none; }
+  </style>
+
+  <title>{% block title %}My amazing site{% endblock %}</title>
+</head>
+
+<body>
+<div id="summary">
+    <h1>sshkeys.net <span>&mdash; an SSH public keyserver</span></h1>
+</div>
+
+{% block explanation %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+<div id="footer">
+    <small>Comments to <a href="mailto:chris-sshkeys@printf.net">chris-sshkeys@printf.net</a>.  Powered by <a href="http://djangoproject.com">Django</a>.  Site source available under <a href="http://www.gnu.org/licenses/agpl.txt">AGPLv3</a> on request.</small>
+</div>
+</body>
+</html>

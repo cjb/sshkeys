@@ -1,0 +1,56 @@
+{% extends "keys/base_template.html" %}
+{% block title %}sshkeys.net{% endblock %}
+
+{% block explanation %}
+<div id="explanation">
+  <h4>What's this, then?</h4>
+  <p>It's an open repository of public <a href="http://en.wikipedia.org/wiki/Secure_Shell">SSH</a> keys, analogous to an <a href="http://pgp.mit.edu/">OpenPGP keyserver</a>.
+  <br><br>
+  <h4>Oh.  How's that useful?</h4>
+  <p>
+  Well, if I want to give you an account on my machine, it would be 
+  easiest if I could obtain your key by running a simple command such as:
+  <blockquote>wget sshkeys.net/you@yourdomain.com</blockquote>
+  (Which is what this site provides.)
+  <br><br>
+  <h4>Is that secure?</h4>
+
+  Somewhat.  When you attempt to upload a key and associate it with an
+  e-mail address, we send e-mail to that address containing an
+  authentication token, and a copy of the key provided.  If the person
+  with access to that e-mail account clicks the link, the address and
+  key go up on the site.  (You're still trusting that the site is
+  returning legitimate results to you, though, and that DNS brought
+  you to the right place.)  To be safe, you should double-check that
+  you have the right key with the key's owner before installing it.
+
+  <br><br>
+  <h4>Are there any other benefits to using this site?</h4>
+  Yes.  You can search for keys, and create a saved query for a search
+  that automatically updates itself.  Finally, one ancillary benefit
+  of having a large repository of SSH keys is that we can attempt to
+  detect duplicate keys &mdash; if an SSH implementation has
+  insufficient randomness (as one has in the past), we can detect it
+  faster than it might otherwise be detected.
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="secone">
+  <h3>Upload a key</h3>
+  <form action="/upload/" method="post">
+  <b>E-mail address:</b> <input type="text" name="address" size="30"><p>
+  <b>SSH key ("id_XXX.pub" on Unix):</b><p>
+  <textarea rows="4" cols="80" wrap="soft" name="keytext"></textarea><p>
+  <input type="submit" value="Upload key">
+  </form>
+</div>
+
+<div id="sectwo">
+  <h3>Search for keys</h3>
+  <form action="/search/" method="post">
+  <p>Enter search string:</b> <input type="text" name="search" size="30">
+  <input type="submit" value="Search">
+  </form>
+</div>
+{% endblock %}

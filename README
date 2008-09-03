@@ -1,0 +1,7 @@
+This is the backend Django code for http://sshkeys.net/.  All original
+code is hereby licensed under the GNU AGPLv3.
+
+Thanks to the Django authors, and James Tauber for django-email-verification
+which I used snippets of code from for e-mail token verification.
+
+-- Chris Ball <chris-sshkeys@printf.net>.
