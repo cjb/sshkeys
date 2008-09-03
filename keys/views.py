@@ -21,9 +21,13 @@ def list(request, **kwargs):
       AddressKey.objects.filter(verified=True).order_by("address__address")
     return object_list(request, **kwargs)
 
-def detail(request, address):
-    keyobjs = AddressKey.objects.filter(verified=True, 
+def detail(request, address=None, id=None):
+    if address:
+        keyobjs = AddressKey.objects.filter(verified=True, 
                                         address__address=address)
+    elif id:
+        keyobjs = AddressKey.objects.filter(verified=True, 
+                                        id=id)
     keylist = set()
     for key in keyobjs:
         keylist.add(unicode(key.sshkey))
