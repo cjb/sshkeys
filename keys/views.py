@@ -5,6 +5,13 @@ from django.views.generic.list_detail import object_list, object_detail
 from sshkeys.keys.models import Address, SSHKey, AddressKey
 from datetime import datetime
 
+
+# favour django-mailer but fall back to django.core.mail
+try:
+    from mailer import send_mail
+except ImportError:
+    from django.core.mail import send_mail
+
 def index(request):
     return render_to_response("keys/address_index.html")
 
@@ -30,10 +37,13 @@ def upload(request):
     newrel, created = AddressKey.objects.get_or_create(
                           address=newaddress, sshkey=newkey,
                           defaults={'date_added': datetime.now(),
-                                    'verified': False})
+                                    'verified': False,
+                                    'token_sent': datetime.now()})
     if created:
+        newrel.send_confirmation(newrel)
         return render_to_response("keys/address_uploaded.html")
     else:
+        newrel.send_confirmation(newrel)
         return render_to_response("keys/address_index.html")
 
 def search(request, **kwargs):
@@ -42,6 +52,14 @@ def search(request, **kwargs):
     kwargs['allow_empty'] = True
     kwargs['queryset'] = Address.objects.filter(address__contains=search)
     return object_list(request, extra_context={"search": search}, **kwargs)
+
+def confirm(request, token):
+    obj = AddressKey.objects.filter(token=token)
+    if len(obj) == 1:
+        if AddressKey.confirm_token(obj[0]) is True:
+                return render_to_response("keys/address_verified.html")
+
+    return render_to_response("keys/address_verifyfailed.html")
 
 def download(request):
     search_str = request.POST['search']

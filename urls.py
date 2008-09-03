@@ -6,11 +6,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('sshkeys.keys.views',
-    (r'^$',                    'index'),
-    (r'^list/$',               'list'),
-    (r'^(?P<address>.*@.*)/$', 'detail'),
-    (r'^upload/$',             'upload'),
-    (r'^search/$',             'search'),
-    (r'^download/$',           'download'),
-    (r'^admin/(.*)',           admin.site.root),
+    (r'^$',                        'index'),
+    (r'^list/$',                   'list'),
+    (r'^(?P<address>.*@.*)/$',     'detail'),
+    (r'^upload/$',                 'upload'),
+    (r'^search/$',                 'search'),
+    (r'^download/$',               'download'),
+    (r'^confirm/(?P<token>\w+)/$', 'confirm'),
+    (r'^admin/(.*)',               admin.site.root),
 )
