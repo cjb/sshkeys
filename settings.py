@@ -7,17 +7,19 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
+FORCE_SCRIPT_NAME = ''
+
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'sshkeys.db'             # Or path to database file if using sqlite3.
+DATABASE_NAME = '/home/chris/sshkeys/sshkeys.db'             # Or path to database file if using sqlite3.
 DATABASE_USER = 'sshkeys'             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
 # Email
-EMAIL_HOST = 'printf.net'
+EMAIL_HOST = 'localhost'
 FROM_EMAIL = 'chris-sshkeys@printf.net'
 
 # Local time zone for this installation. Choices can be found here:
@@ -73,7 +75,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/cjb/sshkeys/templates"
+    "/home/chris/sshkeys/templates"
 )
 
 INSTALLED_APPS = (

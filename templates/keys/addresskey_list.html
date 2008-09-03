@@ -1,0 +1,30 @@
+{% extends "keys/base_template.html" %}
+{% block title %}sshkeys.net{% endblock %}
+
+{% block explanation %}
+<div id="explanation">
+  <h4>Search results for {{ search }}</h4>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="secone">
+{% if object_list %}
+    <ul>
+    {% for object in object_list %}
+        <li><a href="/{{ object.address }}">{{ object.address }}</a>
+    {% endfor %}
+    </ul>
+</div>
+
+<div id="sectwo">
+    <form action="/download/" method="post">
+    <input type="hidden" name="search" value="{{ search }}">
+    <input type="submit" value="Download these keys in a single text file">
+    </form>
+{% else %}
+    <p>No addresses are available.</p>
+{% endif %}
+</div>
+{% endblock %}
+
