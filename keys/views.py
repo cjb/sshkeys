@@ -15,6 +15,9 @@ except ImportError:
 def index(request):
     return render_to_response("keys/address_index.html")
 
+def view404(request):
+    return HttpResponse("No keys were found for that address.", status=404)
+
 def list(request, **kwargs):
     kwargs['allow_empty'] = True
     kwargs['queryset'] = \
@@ -28,6 +31,10 @@ def detail(request, address=None, id=None):
     elif id:
         keyobjs = AddressKey.objects.filter(verified=True, 
                                         id=id)
+
+    if not keyobjs:
+        raise Http404
+
     keylist = set()
     for key in keyobjs:
         keylist.add(unicode(key.sshkey))
@@ -37,9 +44,9 @@ def upload(request):
     address_str = request.POST['address']
     keytext_str = request.POST['keytext']
     if not "@" in address_str:
-        raise Http404, "Address given is not a valid e-mail address."
+        return HttpResponse("Address given is not a valid e-mail address.", status=404)
     if not keytext_str.startswith("ssh-"):
-        raise Http404, "Key given is not an ASCII ssh public key."
+        return HttpResponse("Key given is not an ASCII ssh public key.", status=404)
     newaddress, undef = Address.objects.get_or_create(address=address_str)
     newkey, undef = SSHKey.objects.get_or_create(keytext=keytext_str)
     newrel, created = AddressKey.objects.get_or_create(

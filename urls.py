@@ -5,6 +5,7 @@ from sshkeys.keys.models import Address
 from django.contrib import admin
 admin.autodiscover()
 
+handler404 = 'sshkeys.keys.views.view404'
 urlpatterns = patterns('sshkeys.keys.views',
     (r'^$',                         'index'),
     (r'^list/?$',                   'list'),
@@ -16,3 +17,4 @@ urlpatterns = patterns('sshkeys.keys.views',
     (r'^confirm/(?P<token>\w+)/?$', 'confirm'),
     (r'^admin/(.*)',               admin.site.root),
 )
+

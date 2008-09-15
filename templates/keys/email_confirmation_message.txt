@@ -10,8 +10,9 @@ To confirm this is correct, go to:
 
 http://sshkeys.net/confirm/{{ confirmation_key }}/ 
 
-If this is not correct, you can either do nothing or let me know by 
-replying to this mail.
+If this is not correct, *do not click on the link above*.
+
+Thanks,
 
 -- 
 chris-sshkeys@printf.net

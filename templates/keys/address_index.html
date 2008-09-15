@@ -26,12 +26,15 @@
 
   <br><br>
   <h4>Are there any other benefits to using this site?</h4>
-  Yes.  You can search for keys, and create a saved query for a search
-  that automatically updates itself.  Finally, one ancillary benefit
-  of having a large repository of SSH keys is that we can attempt to
-  detect duplicate keys &mdash; if an SSH implementation has
-  insufficient randomness (as one has in the past), we can detect it
+  One ancillary benefit of having a large repository of SSH keys is that 
+  we can attempt to detect duplicate keys &mdash; if an SSH implementation 
+  has insufficient randomness (as one has in the past), we can detect it
   faster than it might otherwise be detected.
+
+  <br><br>
+  <h4>What should I do if I want to remove my key?</h4>
+  For now, send me e-mail.  In the future, confirmation tokens will let
+  you remove keys too.
 </div>
 {% endblock %}
 
@@ -40,8 +43,14 @@
   <h3>Upload a key</h3>
   <form action="/upload/" method="post">
   <b>E-mail address:</b> <input type="text" name="address" size="30"><p>
-  <b>SSH key ("id_XXX.pub" on Unix):</b><p>
+  <b>SSH key ("<tt>id_XXX.pub</tt>" on Unix):</b><p>
   <textarea rows="4" cols="80" wrap="soft" name="keytext"></textarea><p>
+  Your public key filename will be of the form "<tt>id_XXẊ.pub</tt>" on Unix; 
+  the .pub is very important, as you must not try to upload your private key
+  (which has a filename of the form "<tt>id_XXX</tt>".  The first few 
+  characters of the file you load should be "<tt>ssh-</tt>", and <b>not</b> 
+  "<tt>-----BEGIN XXX PRIVATE KEY-----</tt>".
+  
   <input type="submit" value="Upload key">
   </form>
 </div>
