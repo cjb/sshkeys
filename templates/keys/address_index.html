@@ -42,18 +42,16 @@
 <div id="secone">
   <h3>Upload a key</h3>
   <form action="/upload" method="post" enctype="multipart/form-data">
-  <b>E-mail address:</b> <input type="text" name="address" size="30"><p>
-  <b>SSH key ("<tt>id_XXX.pub</tt>" on Unix):</b><p>
-  You can paste your key directly:<p>
+  E-mail address: <input type="text" name="address" size="30"><p>
+  You can paste your key(s) directly:<p>
   <textarea rows="4" cols="80" wrap="soft" name="keytext"></textarea><p>
-  Or upload it from a local (<tt>authorized_keys</tt>) file on your machine:<p>
+  Or upload from a local file on your machine ("<tt>id_XXX.pub</tt>" or "<tt>authorized_keys</tt>" files on Unix):<p>
   <input type="file" name="keyfile" size="40"><p>
-  Your public key filename will be of the form "<tt>id_XXẊ.pub</tt>" on Unix; 
-  the .pub is very important, as you must not try to upload your private key
-  (which has a filename of the form "<tt>id_XXX</tt>".  The first few 
-  characters of the file you load should be "<tt>ssh-</tt>", and <b>not</b> 
-  "<tt>-----BEGIN XXX PRIVATE KEY-----</tt>".
-  
+  Your public key filename will be of the form "<tt>id_XXẊ.pub</tt>"
+  or "<tt>authorized_keys</tt>" on Unix; you must not try to upload
+  your private key (which has a filename of the form "<tt>id_XXX</tt>").
+  The first few characters of the file you upload should be "<tt>ssh-</tt>", 
+  and <b>not</b> "<tt>-----BEGIN XXX PRIVATE KEY-----</tt>".<p>
   <input type="submit" value="Upload key">
   </form>
 </div>

@@ -15,6 +15,6 @@ urlpatterns = patterns('sshkeys.keys.views',
     (r'^search/?$',                 'search'),
     (r'^download/?$',               'download'),
     (r'^confirm/(?P<token>\w+)/?$', 'confirm'),
-    (r'^admin/(.*)',               admin.site.root),
+    (r'^admin/?(.*)',               admin.site.root),
 )
 
