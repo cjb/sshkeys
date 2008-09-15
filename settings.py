@@ -1,6 +1,6 @@
 # Django settings for sshkeys project.
 
-DEBUG = False
+DEBUG = True#False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

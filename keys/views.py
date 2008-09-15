@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.views.generic.list_detail import object_list, object_detail
 from sshkeys.keys.models import Address, SSHKey, AddressKey
 from datetime import datetime
-
+import re
 
 # favour django-mailer but fall back to django.core.mail
 try:
@@ -46,22 +46,43 @@ def detail(request, address=None, id=None):
 
 def upload(request):
     address_str = request.POST['address']
-    keytext_str = request.POST['keytext']
-    if not "@" in address_str:
-        return HttpResponse("Address given is not a valid e-mail address.", status=404)
-    if not keytext_str.startswith("ssh-"):
-        return HttpResponse("Key given is not an ASCII ssh public key.", status=404)
-    newaddress, undef = Address.objects.get_or_create(address=address_str)
-    newkey, undef = SSHKey.objects.get_or_create(keytext=keytext_str)
-    newrel, created = AddressKey.objects.get_or_create(
-                          address=newaddress, sshkey=newkey,
-                          defaults={'date_added': datetime.now(),
-                                    'verified': False,
-                                    'token_sent': datetime.now()})
 
-    # "if created:" can tell us whether we created a new pair or
-    # just sent out a reminder about an old one, if we care.
-    newrel.send_confirmation(newrel)
+    if not "@" in address_str:
+        return HttpResponse("Address given is not a valid e-mail address.", 
+                            status=404)
+    
+    if request.POST.has_key('keytext') and request.POST['keytext']:
+        keystr = request.POST['keytext']
+    elif request.FILES.has_key('keyfile'):
+        keystr = request.FILES['keyfile'].read()
+    else:
+        return HttpResponse("No key provided.", status=404)
+
+    keytext_lines = ''.join(keystr)
+    pattern = re.compile("ssh-\w+ \S+ \S+")
+    match = pattern.findall(keytext_lines)
+
+    if not match:
+        return HttpResponse("File provided does not contain SSH public keys.",
+                            status=404)
+
+    for line in match:
+        if not line.startswith("ssh-"):
+            return HttpResponse("Key given is not an ASCII ssh public key.", 
+                                status=404)
+
+        newaddress, undef = Address.objects.get_or_create(address=address_str)
+        newkey, undef = SSHKey.objects.get_or_create(keytext=line)
+        newrel, created = AddressKey.objects.get_or_create(
+            address=newaddress, sshkey=newkey,
+            defaults={'date_added': datetime.now(),
+                      'verified': False,
+                      'token_sent': datetime.now()})
+
+        # "if created:" can tell us whether we created a new pair or
+        # just sent out a reminder about an old one, if we care.
+        newrel.send_confirmation(newrel)
+
     return render_to_response("keys/address_uploaded.html")
 
 def search(request, **kwargs):

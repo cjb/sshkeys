@@ -4,7 +4,7 @@ Someone has requested adding the following e-mail address and SSH public
 key to the public database at http://sshkeys.net/:
 
    E-mail:         {{ email_address }}
-   Public key(s):  
+   Public key:
 
 {{ sshkey }}
 
