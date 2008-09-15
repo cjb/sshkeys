@@ -38,7 +38,11 @@ def detail(request, address=None, id=None):
     keylist = set()
     for key in keyobjs:
         keylist.add(unicode(key.sshkey))
-    return HttpResponse("\n".join(keylist), mimetype="text/plain")
+
+    response = HttpResponse("\n".join(keylist), mimetype="text/plain")
+    # wget seems to ignore content-disposition.  What's up with that?
+    response['Content-Disposition'] = 'attachment; filename=authorized_keys'
+    return response
 
 def upload(request):
     address_str = request.POST['address']
